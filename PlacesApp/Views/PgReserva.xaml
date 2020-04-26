@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:controls="clr-namespace:PlacesApp.Controls" 
+             xmlns:behaviors="clr-namespace:PlacesApp.Helpers.Behaviors" 
+             xmlns:converters="clr-namespace:PlacesApp.Converters" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:vn="clr-namespace:PlacesApp.ViewModels" 
+             xmlns:vn1="clr-namespace:PlacesApp.Models"
+             ios:Page.UseSafeArea="true"
+             x:Class="PlacesApp.Views.PgReserva">
+
+    <!--<ContentPage.BindingContext>
+        <vn1:Place/>
+    </ContentPage.BindingContext>-->
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+            <Frame  >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"  />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
+                    
+                    <StackLayout >
+                        <Label FontAttributes="Bold" FontSize="18" Text="{Binding Nombre}" />
+                        <Label FontAttributes="Bold" Text="{Binding Direccion}"/>
+                        <Label FontAttributes="Bold" Text="{Binding Celular}"/>
+                        <Label FontAttributes="Bold" Text="{Binding Description}"/>
+                    </StackLayout>
+                    
+                    <StackLayout HorizontalOptions="Center" WidthRequest="150" Grid.Column="1" >
+                        <Frame CornerRadius="20" 
+                               Padding="0"
+                               IsClippedToBounds="True">
+                            <Image Aspect="AspectFill"   
+                                   HeightRequest="100" 
+                                   WidthRequest="100" 
+                                   Source="{Binding Image}"/>
+                        </Frame>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+
+            <StackLayout>
+                <DatePicker 
+                    Style="{StaticResource cardTitleStyle}" 
+                    MinimumDate="{Binding Fecha}" 
+                    Date="{Binding Fecha}" 
+                    HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <BoxView Style="{StaticResource borderStyle}"/>
+
+                <yummy:PancakeView 
+                       Style="{StaticResource cardContainerStyle}"
+                       x:Name="descriptionContainer">
+                    <Grid Padding="10, 15"
+                          RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackLayout>
+                            <Label Text="Concepto"
+                                   Style="{StaticResource cardTitleStyle}"
+                                   Margin="10, 0, 0, 0"/>
+                            <Label Margin="20,0,0,0" Text="{Binding Concepto}"/>
+                        </StackLayout>
+                        
+                        <BoxView Style="{StaticResource borderStyle}"
+                                     Grid.Row="1"/>
+                        <Label Text="{Binding Description}"
+                                   Margin="10"
+                                   FontSize="Small"
+                                   TextColor="{DynamicResource secondaryLabel}"
+                                   Grid.Row="2"/>
+                        <BoxView Style="{StaticResource borderStyle}"
+                                     Grid.Row="3"/>
+                        
+                        <Grid Grid.Row="4" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            
+                            <Label Text="Horas disponibles"
+                                   HorizontalOptions="StartAndExpand"                                   
+                                   Style="{StaticResource cardTitleStyle}"
+                                   Margin=" 10"/>
+
+                            <yummy:PancakeView Style="{StaticResource buttonContainerStyle}"
+                                               Grid.Column="1"
+                                               HorizontalOptions="EndAndExpand"
+                                               WidthRequest="120">
+                                <Button Text="CONTINUAR"          
+                                        Command="{Binding ContinuarComando}"
+                                        x:Name="BtnReservar"
+                                        TextColor="White"                                           
+                                        CornerRadius="10"
+                                        BackgroundColor="#5fc567"/>
+                            </yummy:PancakeView>
+
+                        </Grid>
+                        
+                        <BoxView Style="{StaticResource borderStyle}"
+                                     Grid.Row="5"/>
+                        <StackLayout Grid.Row="6" 
+                                     Margin="0,10,0,0">
+                            
+                            <controls:ExtendedListView AbsoluteLayout.LayoutBounds="0,1,1,.6" 
+                                                       x:Name="listViewEjemplo1"
+                                                       ItemSelected="listViewEjemplo1_ItemSelected"
+                                                       ItemsSource="{Binding Horario}"
+                                                       AbsoluteLayout.LayoutFlags="All"
+                                                       HasUnevenRows="True"
+                                                       IsPullToRefreshEnabled="true"
+                                                       RefreshControlColor="Red"
+                                                       SeparatorVisibility="None"         
+                                                       VerticalOptions="FillAndExpand">
+                                
+                                <controls:ExtendedListView.ItemTemplate  >
+                                    <DataTemplate >
+                                        <ViewCell >
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <BoxView Margin="16,0,0,0"
+                                                        WidthRequest="1"
+                                                        HorizontalOptions="Start"
+                                                        BackgroundColor="#00ae47"/>
+                                                <yummy:PancakeView Margin="16,0,0,0" Padding="16,8"
+                                                                   WidthRequest="300"
+                                                                   BorderThickness="0.2"
+                                                                   CornerRadius="0,4,0,4"
+                                                                   HorizontalOptions="StartAndExpand">
+                                                    <Frame >
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                            </Grid.RowDefinitions>
+                                                            <Label FontSize="18"
+                                                                   Text="{Binding ProNombre}"
+                                                                   Grid.Column="0"
+                                                                   VerticalOptions="Start" />
+                                                            <Label FontSize="19"
+                                                                   Grid.Column="1"
+                                                                   Text="{Binding ProPrecio}"
+                                                                   HorizontalOptions="End" />
+                                                        </Grid>
+                                                    </Frame>
+                                                </yummy:PancakeView>
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </controls:ExtendedListView.ItemTemplate>
+                                <controls:ExtendedListView.Footer>
+
+                                    <ActivityIndicator />
+
+                                </controls:ExtendedListView.Footer>
+                            </controls:ExtendedListView>
+                        </StackLayout>
+                    </Grid>
+                </yummy:PancakeView>
+                
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
